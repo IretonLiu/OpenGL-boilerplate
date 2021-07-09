@@ -1,0 +1,11 @@
+{
+	"files.associations": {
+		"*.html": "html",
+		"**/templates/**/*.html": "django-html",
+		"iostream": "cpp",
+		"string": "cpp",
+		"*.tcc": "cpp",
+		"exception": "cpp",
+		"thread": "cpp"
+	}
+}

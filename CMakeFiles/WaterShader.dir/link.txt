@@ -1,0 +1,1 @@
+/usr/bin/c++  -Wall -g -lGL -lglfw -lGLEW -lGLU CMakeFiles/WaterShader.dir/main.cpp.o CMakeFiles/WaterShader.dir/gl_helper.cpp.o CMakeFiles/WaterShader.dir/geometry.cpp.o CMakeFiles/WaterShader.dir/camera.cpp.o CMakeFiles/WaterShader.dir/trackball_ctrl.cpp.o -o WaterShader 
