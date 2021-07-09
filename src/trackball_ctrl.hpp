@@ -14,11 +14,18 @@ class TrackballControl {
     // solution for accessing members of the control class from within the glfw callback
     inline static auto cursorPositionCallback(GLFWwindow* window, double xPos, double yPos) -> void {
         std::cout << xPos << "," << yPos << std::endl;
+
+        // get window dimensions
         int windowWidth;
         int windowHeight;
         glfwGetWindowSize(window, &windowWidth, &windowHeight);
-        float newX = viewportTransform(xPos, -1, 1, 0, windowWidth);
-        float newY = viewportTransform(yPos, 1, -1, 0, windowHeight);
+
+        // calculate aspect ratio to be used for viewport transformation
+        float aspectRatio = windowWidth / windowHeight;
+
+        // apply viewport transform to get normalized mouse coordinates
+        float newY = viewportTransform(yPos, 1, -1, 0, windowHeight);                             // normalize the y coordinates to between -1 and 1
+        float newX = viewportTransform(xPos, -1 * aspectRatio, 1 * aspectRatio, 0, windowWidth);  // normalize the x coordinates according to the aspect ratio
         TrackballControl* trackballControl = static_cast<TrackballControl*>(glfwGetWindowUserPointer(window));
         trackballControl->setMouseCoords(newX, newY);
     };

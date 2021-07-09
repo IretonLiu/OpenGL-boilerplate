@@ -163,7 +163,7 @@ void render(PerspectiveCamera* camera, Geometry* geometry) {
     // white background
     glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 
-    GLuint programID = loadShaders("VertexShader.glsl", "FragmentShader.glsl");
+    GLuint programID = loadShaders("../src/shaders/VertexShader.glsl", "../src/shaders/FragmentShader.glsl");
     GLuint uModelView = glGetUniformLocation(programID, "modelView");
     GLuint uProjection = glGetUniformLocation(programID, "projection");
 
