@@ -7,10 +7,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 set(CMAKE_CXX_STANDARD 11)
 
 set(SRCS 
-	main.cpp
-	gl_helper.cpp
-	geometry.cpp
-	camera.cpp
-	trackball_ctrl.cpp)
+	src/main.cpp
+	src/gl_helper.cpp
+	src/geometry.cpp
+	src/camera.cpp
+	src/trackball_ctrl.cpp
+	src/utilities.cpp)
 
 add_executable(WaterShader ${SRCS})
