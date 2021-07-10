@@ -283,4 +283,42 @@ CMakeFiles/WaterShader.dir/src/main.cpp.o: \
  /usr/include/glm/gtx/transform.hpp /usr/include/glm/gtx/transform.inl \
  /home/ireton/ComputerGraphics/OpenGL/ShaderPrograms/water/src/geometry.hpp \
  /home/ireton/ComputerGraphics/OpenGL/ShaderPrograms/water/src/trackball_ctrl.hpp \
+ /usr/include/glm/gtx/string_cast.hpp \
+ /usr/include/glm/gtc/type_precision.hpp \
+ /usr/include/glm/gtc/quaternion.hpp \
+ /usr/include/glm/ext/vector_relational.hpp \
+ /usr/include/glm/ext/vector_relational.inl \
+ /usr/include/glm/detail/type_float.hpp \
+ /usr/include/glm/ext/quaternion_common.hpp \
+ /usr/include/glm/ext/quaternion_geometric.hpp \
+ /usr/include/glm/ext/quaternion_geometric.inl \
+ /usr/include/glm/ext/quaternion_common.inl \
+ /usr/include/glm/ext/quaternion_float.hpp \
+ /usr/include/glm/detail/type_quat.hpp \
+ /usr/include/glm/ext/quaternion_relational.hpp \
+ /usr/include/glm/ext/quaternion_relational.inl \
+ /usr/include/glm/detail/type_quat.inl \
+ /usr/include/glm/ext/quaternion_float_precision.hpp \
+ /usr/include/glm/ext/quaternion_double.hpp \
+ /usr/include/glm/ext/quaternion_double_precision.hpp \
+ /usr/include/glm/ext/quaternion_trigonometric.hpp \
+ /usr/include/glm/ext/quaternion_trigonometric.inl \
+ /usr/include/glm/ext/quaternion_transform.hpp \
+ /usr/include/glm/ext/quaternion_transform.inl \
+ /usr/include/glm/gtc/quaternion.inl /usr/include/glm/gtc/epsilon.hpp \
+ /usr/include/glm/detail/setup.hpp /usr/include/glm/gtc/epsilon.inl \
+ /usr/include/glm/gtc/vec1.hpp /usr/include/glm/ext/vector_bool1.hpp \
+ /usr/include/glm/ext/vector_bool1_precision.hpp \
+ /usr/include/glm/ext/vector_float1.hpp \
+ /usr/include/glm/ext/vector_float1_precision.hpp \
+ /usr/include/glm/ext/vector_double1.hpp \
+ /usr/include/glm/ext/vector_double1_precision.hpp \
+ /usr/include/glm/ext/vector_int1.hpp \
+ /usr/include/glm/ext/vector_int1_sized.hpp \
+ /usr/include/glm/ext/vector_uint1.hpp \
+ /usr/include/glm/ext/vector_uint1_sized.hpp \
+ /usr/include/glm/gtc/type_precision.inl \
+ /usr/include/glm/gtx/dual_quaternion.hpp \
+ /usr/include/glm/gtx/dual_quaternion.inl \
+ /usr/include/glm/gtx/string_cast.inl /usr/include/c++/11.1.0/cstdarg \
  /home/ireton/ComputerGraphics/OpenGL/ShaderPrograms/water/src/utilities.hpp

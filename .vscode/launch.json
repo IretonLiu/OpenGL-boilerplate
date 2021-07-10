@@ -8,7 +8,7 @@
 			"name": "(gdb) Launch",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${workspaceFolder}/WaterShader",
+			"program": "${workspaceFolder}/bin/WaterShader",
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
