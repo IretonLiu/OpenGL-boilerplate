@@ -2,30 +2,60 @@
 #define TRACKBALLCTRL_HPP
 
 #include <cmath>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include <iostream>
 
 #include "camera.hpp"
-#include "glm/gtx/string_cast.hpp"
 #include "utilities.hpp"
+
+// uses the shoemake's algorithm to do the trackball
+// the algorithm puts a virtual hemiphere over the 2D screen, called the arcball
+// rotation is based on mouse movements over the arc ball
 
 class TrackballControl {
    private:
     GLFWwindow* window;
-    Camera* camera;
+    PerspectiveCamera* camera;
     glm::vec3 currCoord;
 
     // solution for accessing members of the control class from within the glfw callback
     inline static auto cursorPositionCallback(GLFWwindow* window, double xPos, double yPos) -> void {
-        //std::cout << xPos << "," << yPos << std::endl;
+        int windowWidth, windowHeight;
+        glfwGetWindowSize(window, &windowWidth, &windowHeight);
+        if (xPos >= windowWidth || yPos >= windowHeight) return;
 
         float xPosNorm, yPosNorm;
-        normalizeCoord(window, xPos, yPos, xPosNorm, yPosNorm);
+        normalizeCoord(windowWidth, windowHeight, xPos, yPos, xPosNorm, yPosNorm);
         TrackballControl* trackballControl = static_cast<TrackballControl*>(glfwGetWindowUserPointer(window));
         // check if the left mouse button is pressed
         int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
         if (state == GLFW_PRESS) {
-            //std::cout << glm::to_string(sphericalProjection(xPosNorm, yPosNorm)) << std::endl;
-            trackballControl->setCurrMouseCoords(sphricalProjection(xPosNorm, yPosNorm));
+            // calculate the axis and angle of rotation between 2 coords of the mouse
+            glm::vec3 nextCoord = sphericalProjection(xPosNorm, yPosNorm);
+
+            std::cout << "curr coord:" << glm::to_string(trackballControl->getCurrCoord()) << std::endl;
+            std::cout << "next coord:" << glm::to_string(nextCoord) << std::endl;
+
+            // // don't do anything if the cooridnate has not changed
+            // if (nextCoord == trackballControl->getCurrCoord()) return;
+
+            float angle = angleBetween(trackballControl->getCurrCoord(), nextCoord);
+            glm::vec3 cross = glm::cross(trackballControl->getCurrCoord(), nextCoord);
+            //std::cout << glm::to_string(cross) << std::endl;
+
+            // calculate the rotation quaternion from the angle and axis (glm requires angles in degrees)
+            glm::quat rotQuat = glm::quat(glm::cos(glm::degrees(angle / 2)), glm::sin(glm::degrees(angle / 2)) * cross);
+
+            // get rotational matrxi from quaternion
+            glm::mat4 rotMatrix = glm::toMat4(rotQuat);
+            std::cout << "rotation matrix:" << glm::to_string(rotMatrix) << std::endl;
+            // add the rotation transformation to the camera
+            trackballControl->addCameraTransform(rotMatrix);
+
+            // update the current mouse position
+            trackballControl->setCurrMouseCoords(nextCoord);
         }
     };
 
@@ -38,9 +68,13 @@ class TrackballControl {
             double xPos, yPos;
             glfwGetCursorPos(window, &xPos, &yPos);
             float xPosNorm, yPosNorm;
-            normalizeCoord(window, xPos, yPos, xPosNorm, yPosNorm);
 
-            //std::cout << glm::to_string(sphericalProjection(xPosNorm, yPosNorm)) << std::endl;
+            // get window size and normalize coordinate
+            int windowWidth, windowHeight;
+            glfwGetWindowSize(window, &windowWidth, &windowHeight);
+            normalizeCoord(windowWidth, windowHeight, xPos, yPos, xPosNorm, yPosNorm);
+
+            // project the 2D coordinate on to the 3D arcball
             trackballControl->currCoord = sphericalProjection(xPosNorm, yPosNorm);
         }
     }
@@ -50,7 +84,7 @@ class TrackballControl {
     static glm::vec3 sphericalProjection(float x, float y);
 
     // normalize the coordinate from screen to [-1, 1]
-    static glm::vec3 normalizeCoord(GLFWwindow* window, float xPos, float yPos, float& xPosNorm, float& yPosNorm);
+    static glm::vec3 normalizeCoord(int windowWidth, int windowHeight, float xPos, float yPos, float& xPosNorm, float& yPosNorm);
 
    public:
     float currMouseX;
@@ -58,8 +92,14 @@ class TrackballControl {
     float newMouseX;
     float newMouseY;
 
-    TrackballControl(GLFWwindow* _window, Camera* _camera);
+    TrackballControl(GLFWwindow* _window, PerspectiveCamera* _camera);
+    // setters
     void setCurrMouseCoords(glm::vec3 sphereCoord);
+
+    // getters
+    glm::vec3 getCurrCoord();
+
+    void addCameraTransform(glm::mat4 transform);
 };
 
 #endif

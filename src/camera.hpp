@@ -15,6 +15,7 @@ class Camera {
     glm::vec3 target;
     glm::vec3 up;
     glm::vec3 front;
+    glm::mat4 modelMatrx;
 };
 
 class PerspectiveCamera : public Camera {
@@ -32,13 +33,16 @@ class PerspectiveCamera : public Camera {
     //constructor
     PerspectiveCamera(GLfloat _fov, GLfloat _aspectRatio, GLfloat _near, GLfloat _far);
 
-    // a bunch of setters for different camera vectors
+    // setters
     void setPosition(glm::vec3 newPosition);
     void setTarget(glm::vec3 newTarget);
+
+    void addTransformation(glm::mat4 transform);
 
     // getters
     glm::vec3 getPosition();
     glm::mat4 getProjectionMatrix();
     glm::mat4 getViewMatrix();
+    glm::mat4 getModelViewMat();
 };
 #endif

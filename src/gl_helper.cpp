@@ -178,7 +178,7 @@ void render(PerspectiveCamera* camera, Geometry* geometry) {
 
         // Send our transformation to the currently bound shader,
         // TODO: change to work with an actual camera class
-        glUniformMatrix4fv(uModelView, 1, GL_FALSE, &camera->getViewMatrix()[0][0]);
+        glUniformMatrix4fv(uModelView, 1, GL_FALSE, &camera->getModelViewMat()[0][0]);
         glUniformMatrix4fv(uProjection, 1, GL_FALSE, &camera->getProjectionMatrix()[0][0]);
 
         // 1rst attribute buffer : vertices

@@ -283,8 +283,6 @@ CMakeFiles/WaterShader.dir/src/main.cpp.o: \
  /usr/include/glm/gtx/transform.hpp /usr/include/glm/gtx/transform.inl \
  /home/ireton/ComputerGraphics/OpenGL/ShaderPrograms/water/src/geometry.hpp \
  /home/ireton/ComputerGraphics/OpenGL/ShaderPrograms/water/src/trackball_ctrl.hpp \
- /usr/include/glm/gtx/string_cast.hpp \
- /usr/include/glm/gtc/type_precision.hpp \
  /usr/include/glm/gtc/quaternion.hpp \
  /usr/include/glm/ext/vector_relational.hpp \
  /usr/include/glm/ext/vector_relational.inl \
@@ -307,7 +305,15 @@ CMakeFiles/WaterShader.dir/src/main.cpp.o: \
  /usr/include/glm/ext/quaternion_transform.inl \
  /usr/include/glm/gtc/quaternion.inl /usr/include/glm/gtc/epsilon.hpp \
  /usr/include/glm/detail/setup.hpp /usr/include/glm/gtc/epsilon.inl \
- /usr/include/glm/gtc/vec1.hpp /usr/include/glm/ext/vector_bool1.hpp \
+ /usr/include/glm/gtx/quaternion.hpp \
+ /usr/include/glm/ext/quaternion_exponential.hpp \
+ /usr/include/glm/ext/quaternion_exponential.inl \
+ /usr/include/glm/gtx/norm.hpp /usr/include/glm/gtx/component_wise.hpp \
+ /usr/include/glm/detail/setup.hpp \
+ /usr/include/glm/gtx/component_wise.inl /usr/include/glm/gtx/norm.inl \
+ /usr/include/glm/gtx/quaternion.inl /usr/include/glm/gtx/string_cast.hpp \
+ /usr/include/glm/gtc/type_precision.hpp /usr/include/glm/gtc/vec1.hpp \
+ /usr/include/glm/ext/vector_bool1.hpp \
  /usr/include/glm/ext/vector_bool1_precision.hpp \
  /usr/include/glm/ext/vector_float1.hpp \
  /usr/include/glm/ext/vector_float1_precision.hpp \

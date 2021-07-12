@@ -6,10 +6,10 @@ BoxGeometry::BoxGeometry(GLfloat width, GLfloat height, GLfloat length) {
         -0.5f, -0.5f, 0.5f,
         0.5f, 0.5f, 0.5f,
         0.5f, -0.5f, 0.5f,
-        -0.5f, 0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
         0.5f, 0.5f, -0.5f,
-        0.5f, -0.5f, -0.5f};
+        0.5f, -0.5f, -0.5f,
+        -0.5f, 0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f};
 
     indices = std::vector<GLuint>{
         // front
@@ -20,13 +20,13 @@ BoxGeometry::BoxGeometry(GLfloat width, GLfloat height, GLfloat length) {
         4, 3, 5,
         // back
         4, 5, 7,
-        4, 7, 6,
+        6, 4, 7,
         // left
         6, 7, 1,
-        6, 1, 0,
+        0, 6, 1,
         // top
-        6, 0, 2,
-        4, 6, 2,
+        0, 2, 6,
+        6, 2, 4,
         // bottom
         1, 7, 3,
         3, 7, 5};

@@ -7,6 +7,7 @@ PerspectiveCamera::PerspectiveCamera(GLfloat _fov, GLfloat _aspectRatio, GLfloat
     far = _far;
 
     projectionMatrix = glm::perspective(glm::radians(fieldOfView), aspectRatio, near, far);
+    modelMatrx = glm::mat4(1.0f);
 
     position = glm::vec3(0, 0, 0);
     target = glm::vec3(0, 0, 0);
@@ -27,6 +28,10 @@ void PerspectiveCamera::setTarget(glm::vec3 newTarget) {
     front = target - position;
 }
 
+void PerspectiveCamera::addTransformation(glm::mat4 transform) {
+    modelMatrx = transform * modelMatrx;
+}
+
 glm::vec3 PerspectiveCamera::getPosition() {
     return position;
 }
@@ -37,4 +42,8 @@ glm::mat4 PerspectiveCamera::getProjectionMatrix() {
 
 glm::mat4 PerspectiveCamera::getViewMatrix() {
     return viewMatrix;
+}
+
+glm::mat4 PerspectiveCamera::getModelViewMat() {
+    return viewMatrix * modelMatrx;
 }
