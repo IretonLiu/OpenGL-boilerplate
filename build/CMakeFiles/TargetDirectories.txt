@@ -1,3 +1,0 @@
-/home/ireton/ComputerGraphics/OpenGL/ShaderPrograms/water/build/CMakeFiles/rebuild_cache.dir
-/home/ireton/ComputerGraphics/OpenGL/ShaderPrograms/water/build/CMakeFiles/edit_cache.dir
-/home/ireton/ComputerGraphics/OpenGL/ShaderPrograms/water/build/CMakeFiles/WaterShader.dir
