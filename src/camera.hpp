@@ -15,14 +15,14 @@ class Camera {
     glm::vec3 target;
     glm::vec3 up;
     glm::vec3 front;
-    glm::mat4 modelMatrx;
 };
 
 class PerspectiveCamera : public Camera {
    private:
     glm::mat4 projectionMatrix;
     glm::mat4 viewMatrix;
-
+    glm::mat4 modelMatrix;
+    glm::mat4 transform;
     // floats for the projeciton matrix
     GLfloat aspectRatio;
     GLfloat fieldOfView;

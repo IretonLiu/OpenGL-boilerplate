@@ -17,7 +17,7 @@
 class TrackballControl {
    private:
     GLFWwindow* window;
-    PerspectiveCamera* camera;
+    //PerspectiveCamera* camera;
     glm::vec3 currCoord;
 
     // solution for accessing members of the control class from within the glfw callback
@@ -44,6 +44,10 @@ class TrackballControl {
             float angle = angleBetween(trackballControl->getCurrCoord(), nextCoord);
             glm::vec3 cross = glm::cross(trackballControl->getCurrCoord(), nextCoord);
             //std::cout << glm::to_string(cross) << std::endl;
+            //std::cout << glm::cos(glm::degrees(angle / 2)) << std::endl;
+            //std::cout << std::cos(angl)) << std::endl;
+
+            if (std::isnan(angle)) return;
 
             // calculate the rotation quaternion from the angle and axis (glm requires angles in degrees)
             glm::quat rotQuat = glm::quat(glm::cos(glm::degrees(angle / 2)), glm::sin(glm::degrees(angle / 2)) * cross);
@@ -53,6 +57,7 @@ class TrackballControl {
             std::cout << "rotation matrix:" << glm::to_string(rotMatrix) << std::endl;
             // add the rotation transformation to the camera
             trackballControl->addCameraTransform(rotMatrix);
+            std::cout << "modelView matrix:" << glm::to_string(trackballControl->camera->getModelViewMat()) << std::endl;
 
             // update the current mouse position
             trackballControl->setCurrMouseCoords(nextCoord);
@@ -75,7 +80,7 @@ class TrackballControl {
             normalizeCoord(windowWidth, windowHeight, xPos, yPos, xPosNorm, yPosNorm);
 
             // project the 2D coordinate on to the 3D arcball
-            trackballControl->currCoord = sphericalProjection(xPosNorm, yPosNorm);
+            trackballControl->setCurrMouseCoords(sphericalProjection(xPosNorm, yPosNorm));
         }
     }
 
@@ -91,6 +96,7 @@ class TrackballControl {
     float currMouseY;
     float newMouseX;
     float newMouseY;
+    PerspectiveCamera* camera;
 
     TrackballControl(GLFWwindow* _window, PerspectiveCamera* _camera);
     // setters
