@@ -88,6 +88,7 @@ int loadShaders(const char* vertexshader_path, const char* fragmentshader_path) 
     glDeleteShader(vertexShaderID);
     glDeleteShader(fragmentShaderID);
 
+    std::cout << "Shaders attached; Program created" << std::endl;
     return programID;
 };
 
@@ -124,6 +125,7 @@ int initGLProgram(const char* programName) {
 
     // Ensure we can capture the escape key being pressed below
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    std::cout << "GLFW initialized" << std::endl;
     return 0;
 }
 
@@ -160,8 +162,10 @@ void createVAO() {
 void render(PerspectiveCamera* camera, Geometry* geometry) {
     glEnable(GL_DEPTH_TEST);
 
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // changes to wireframe mode
     // white background
     glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+    //std::cout << "Current working directory: " << tmp << std::endl;
 
     GLuint programID = loadShaders("../src/shaders/VertexShader.glsl", "../src/shaders/FragmentShader.glsl");
     GLuint uModelView = glGetUniformLocation(programID, "modelView");
@@ -195,7 +199,7 @@ void render(PerspectiveCamera* camera, Geometry* geometry) {
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexPositionIndexBuffer);
         //glDrawArrays(GL_TRIANGLES, 0, 12 * 3);  // 12*3 indices starting at 0 -> 12 triangles
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, (void*)0);
+        glDrawElements(GL_TRIANGLES, geometry->indices.size(), GL_UNSIGNED_INT, (void*)0);
 
         glDisableVertexAttribArray(0);
 

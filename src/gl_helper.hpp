@@ -15,14 +15,15 @@
 // standard c++ libraries
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
+#include <filesystem>
 #include <fstream>
 #include <glm/glm.hpp>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
-
 // custom includes
 #include "camera.hpp"
 #include "geometry.hpp"

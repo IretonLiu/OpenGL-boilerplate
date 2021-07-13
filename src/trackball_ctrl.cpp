@@ -26,8 +26,8 @@ glm::vec3 TrackballControl::sphericalProjection(float x, float y) {
     return glm::vec3(x, y, std::sqrt(1 - x * x - y * y));
 }
 
-glm::vec3 TrackballControl::normalizeCoord(int windowWidth, int windowHeight, float xPos, float yPos, float& xPosNorm, float& yPosNorm) {
-        // calculate aspect ratio to be used for viewport transformation
+void TrackballControl::normalizeCoord(int windowWidth, int windowHeight, float xPos, float yPos, float& xPosNorm, float& yPosNorm) {
+    // calculate aspect ratio to be used for viewport transformation
     float aspectRatio = (windowWidth * 1.0f) / windowHeight;
 
     // apply viewport transform to get normalized mouse coordinates

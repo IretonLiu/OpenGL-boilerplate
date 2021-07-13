@@ -31,3 +31,45 @@ BoxGeometry::BoxGeometry(GLfloat width, GLfloat height, GLfloat length) {
         1, 7, 3,
         3, 7, 5};
 }
+
+PlaneGeometry::PlaneGeometry(GLfloat _width, GLfloat _height, GLuint _widthSegments, GLuint _heightSegments) {
+    width = _width;
+    height = _height;
+    widthSegments = _widthSegments;
+    heightSegments = _heightSegments;
+    generateVertices();
+    generateIndices();
+}
+
+void PlaneGeometry::generateVertices() {
+    vertices = std::vector<GLfloat>();
+    float segmentWidth = width / widthSegments;
+    float segmentHeight = height / heightSegments;
+    for (GLuint z = 0; z <= heightSegments; z++) {
+        for (GLuint x = 0; x <= widthSegments; x++) {
+            vertices.push_back(x * segmentWidth - (width / 2));
+            vertices.push_back(0.0f);
+            vertices.push_back(z * segmentHeight - (height / 2));
+        }
+    }
+}
+
+void PlaneGeometry::generateIndices() {
+    indices = std::vector<GLuint>();
+    // loop to go through every rectangle in the mesh
+    for (GLuint z = 0; z < heightSegments; z++) {
+        for (GLuint x = 0; x < widthSegments; x++) {
+            GLuint index = x + heightSegments * z + z;
+
+            // first triangle in the rectangle
+            indices.push_back(index);
+            indices.push_back(index + widthSegments + 1);
+            indices.push_back(index + 1);
+
+            // second triangle
+            indices.push_back(index + 1);
+            indices.push_back(index + widthSegments + 1);
+            indices.push_back(index + widthSegments + 2);
+        }
+    }
+}
