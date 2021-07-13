@@ -35,29 +35,30 @@ class TrackballControl {
             // calculate the axis and angle of rotation between 2 coords of the mouse
             glm::vec3 nextCoord = sphericalProjection(xPosNorm, yPosNorm);
 
-            std::cout << "curr coord:" << glm::to_string(trackballControl->getCurrCoord()) << std::endl;
-            std::cout << "next coord:" << glm::to_string(nextCoord) << std::endl;
+            // std::cout << "curr coord:" << glm::to_string(trackballControl->getCurrCoord()) << std::endl;
+            // std::cout << "next coord:" << glm::to_string(nextCoord) << std::endl;
 
             // // don't do anything if the cooridnate has not changed
             // if (nextCoord == trackballControl->getCurrCoord()) return;
 
             float angle = angleBetween(trackballControl->getCurrCoord(), nextCoord);
             glm::vec3 cross = glm::cross(trackballControl->getCurrCoord(), nextCoord);
-            //std::cout << glm::to_string(cross) << std::endl;
-            //std::cout << glm::cos(glm::degrees(angle / 2)) << std::endl;
-            //std::cout << std::cos(angl)) << std::endl;
+
+            cross = cross / glm::length(cross);  // normalize the cross product, this step is important
+
+            // std::cout << "angle:" << angle << std::endl;
+            // std::cout << "cross:" << glm::to_string(cross) << std::endl;
+            // std::cout << std::cos(angl)) << std::endl;
 
             if (std::isnan(angle)) return;
 
             // calculate the rotation quaternion from the angle and axis (glm requires angles in degrees)
-            glm::quat rotQuat = glm::quat(glm::cos(glm::degrees(angle / 2)), glm::sin(glm::degrees(angle / 2)) * cross);
+            glm::quat rotQuat = glm::quat(glm::cos(angle), glm::sin(angle) * cross);
 
             // get rotational matrxi from quaternion
             glm::mat4 rotMatrix = glm::toMat4(rotQuat);
-            std::cout << "rotation matrix:" << glm::to_string(rotMatrix) << std::endl;
             // add the rotation transformation to the camera
             trackballControl->addCameraTransform(rotMatrix);
-            std::cout << "modelView matrix:" << glm::to_string(trackballControl->camera->getModelViewMat()) << std::endl;
 
             // update the current mouse position
             trackballControl->setCurrMouseCoords(nextCoord);
