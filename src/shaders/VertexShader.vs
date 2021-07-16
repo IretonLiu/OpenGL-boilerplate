@@ -8,14 +8,13 @@ layout(location = 0) in vec3 vertexPosition;
 uniform mat4 modelView;
 uniform mat4 projection;
 
-void main(){	
+void main() {
 
-	// Output position of the vertex, in clip space : MVP * position
+  // Output position of the vertex, in clip space : MVP * position
 
-	gl_Position =  projection * modelView * vec4(vertexPosition,1);
+  gl_Position = projection * modelView * vec4(vertexPosition, 1);
 
-	// The color of each vertex will be interpolated
-	// to produce the color of each fragment
-	// fragmentColor = vertexColor;
+  // The color of each vertex will be interpolated
+  // to produce the color of each fragment
+  // fragmentColor = vertexColor;
 }
-
