@@ -1,4 +1,4 @@
-#include "gl_helper.hpp"
+#include "gl_helper.h"
 
 //
 #include "camera.hpp"
@@ -6,7 +6,7 @@
 #include "trackball_ctrl.hpp"
 
 int main() {
-    int programID = initGLProgram("Water");
+    int programID = initGLProgram("Boilerplate");
 
     if (programID == -1) {
         fprintf(stderr, "something went wrong while initializing");

@@ -1,7 +1,8 @@
-#include "gl_helper.hpp"
+#include "gl_helper.h"
 
 GLFWwindow* window;
 GLuint VAO, vertexPositionBuffer, vertexPositionIndexBuffer;
+
 int loadShaders(const char* vertexshader_path, const char* fragmentshader_path) {
     // Create the shaders
     GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
@@ -129,35 +130,6 @@ int initGLProgram(const char* programName) {
     return 0;
 }
 
-// create the vertex buffer objects
-void createVBOs(Geometry* geometry) {
-    // array buffer for vertex position
-    glGenBuffers(1, &vertexPositionBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexPositionBuffer);
-    glBufferData(GL_ARRAY_BUFFER, geometry->vertices.size() * sizeof(GLfloat), &geometry->vertices[0], GL_STATIC_DRAW);
-
-    // array buffer for indices
-    glGenBuffers(1, &vertexPositionIndexBuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexPositionIndexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, geometry->indices.size() * sizeof(GLuint), &geometry->indices[0], GL_STATIC_DRAW);
-    // error checking
-    GLenum errorValue = glGetError();
-    if (errorValue != GL_NO_ERROR) {
-        fprintf(
-            stderr,
-            "ERROR: Could not create a VBO: %s \n",
-            gluErrorString(errorValue));
-
-        exit(-1);
-    }
-}
-
-void createVAO() {
-    // generate the vertex array object
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-}
-
 // main render function
 void render(PerspectiveCamera* camera, Geometry* geometry) {
     glEnable(GL_DEPTH_TEST);
@@ -165,65 +137,52 @@ void render(PerspectiveCamera* camera, Geometry* geometry) {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // changes to wireframe mode
     // white background
     glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
-    //std::cout << "Current working directory: " << tmp << std::endl;
+    // std::cout << "Current working directory: " << tmp << std::endl;
 
-    GLuint programID = loadShaders("../src/shaders/VertexShader.glsl", "../src/shaders/FragmentShader.glsl");
+    GLuint programID = loadShaders("../src/shaders/VertexShader.vs", "../src/shaders/FragmentShader.fs");
     GLuint uModelView = glGetUniformLocation(programID, "modelView");
     GLuint uProjection = glGetUniformLocation(programID, "projection");
 
-    createVAO();
-    createVBOs(geometry);
+    // generate the vertex array object
+    VertexArray* va = new VertexArray();
+    // array buffer for vertex position
+    VertexBuffer* vb = new VertexBuffer(&geometry->vertices[0], geometry->vertices.size() * sizeof(GLfloat));
+
+    VertexBufferLayout layout;
+    layout.Push(GL_FLOAT, 3, GL_FALSE);
+    va->AddBuffer(*vb, layout);
+
+    // array buffer for indices
+    IndexBuffer* ib = new IndexBuffer(&geometry->indices[0], geometry->indices.size());
+
     do {
         // Clear the screen
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
         // Use our shader
-        glUseProgram(programID);
+        GLCall(glUseProgram(programID));
 
         // Send our transformation to the currently bound shader,
         // TODO: change to work with an actual camera class
         glUniformMatrix4fv(uModelView, 1, GL_FALSE, &camera->getModelViewMat()[0][0]);
         glUniformMatrix4fv(uProjection, 1, GL_FALSE, &camera->getProjectionMatrix()[0][0]);
 
-        // 1rst attribute buffer : vertices
-        glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, vertexPositionBuffer);
-        glVertexAttribPointer(
-            0,         // attribute. No particular reason for 0, but must match the layout in the shader.
-            3,         // size
-            GL_FLOAT,  // type
-            GL_FALSE,  // normalized?
-            0,         // stride
-            (void*)0   // array buffer offset
-        );
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexPositionIndexBuffer);
-        //glDrawArrays(GL_TRIANGLES, 0, 12 * 3);  // 12*3 indices starting at 0 -> 12 triangles
-        glDrawElements(GL_TRIANGLES, geometry->indices.size(), GL_UNSIGNED_INT, (void*)0);
-
-        glDisableVertexAttribArray(0);
+        va->Bind();
+        ib->Bind();
+        // glDrawArrays(GL_TRIANGLES, 0, 12 * 3);  // 12*3 indices starting at 0 -> 12 triangles
+        GLCall(glDrawElements(GL_TRIANGLES, geometry->indices.size(), GL_UNSIGNED_INT, nullptr));
 
         // Swap buffers
         glfwSwapBuffers(window);
         glfwPollEvents();
-        GLenum errorValue = glGetError();
-        if (errorValue != GL_NO_ERROR) {
-            fprintf(
-                stderr,
-                "ERROR: Could not create a VBO: %s \n",
-                gluErrorString(errorValue));
-
-            exit(-1);
-        }
     }  // Check if the ESC key was pressed or the window was closed
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
            glfwWindowShouldClose(window) == 0);
     // Cleanup VBO and shader
-    glDeleteBuffers(1, &vertexPositionBuffer);
-    glDeleteBuffers(1, &vertexPositionIndexBuffer);
     glDeleteProgram(programID);
     glDeleteVertexArrays(1, &VAO);
-
+    delete vb;
+    delete ib;
     // Close OpenGL window and terminate GLFW
     glfwTerminate();
 }
