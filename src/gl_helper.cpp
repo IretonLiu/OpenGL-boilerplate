@@ -1,7 +1,6 @@
 #include "gl_helper.h"
 
 GLFWwindow* window;
-GLuint VAO, vertexPositionBuffer, vertexPositionIndexBuffer;
 
 int initGLProgram(const char* programName) {
     if (!glfwInit()) {
@@ -44,7 +43,7 @@ int initGLProgram(const char* programName) {
 void render(PerspectiveCamera* camera, Geometry* geometry) {
     glEnable(GL_DEPTH_TEST);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // changes to wireframe mode
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);  // changes to wireframe mode
     // white background
     glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 
@@ -84,7 +83,7 @@ void render(PerspectiveCamera* camera, Geometry* geometry) {
            glfwWindowShouldClose(window) == 0);
     // Cleanup VBO and shader
     glDeleteProgram(shader->GetRendererID());
-    glDeleteVertexArrays(1, &VAO);
+    delete va;
     delete vb;
     delete ib;
     // Close OpenGL window and terminate GLFW

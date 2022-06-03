@@ -37,6 +37,10 @@ static unsigned int ShaderStringToType(const std::string &shaderString) {
 
 Shader::Shader() : rendererID(0) {}
 
+Shader::~Shader() {
+    GLCall(glDeleteProgram(rendererID));
+}
+
 void Shader::Bind() const {
     GLCall(glUseProgram(rendererID));
 }
