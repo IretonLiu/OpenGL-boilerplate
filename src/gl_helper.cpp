@@ -3,96 +3,6 @@
 GLFWwindow* window;
 GLuint VAO, vertexPositionBuffer, vertexPositionIndexBuffer;
 
-int loadShaders(const char* vertexshader_path, const char* fragmentshader_path) {
-    // Create the shaders
-    GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-    GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-
-    // Read the Vertex Shader code from the file
-    std::string vertexShaderCode;
-    std::ifstream vertexShaderStream(vertexshader_path, std::ios::in);
-    if (vertexShaderStream.is_open()) {  // Check if the file can be opened
-        std::stringstream sstr;
-        sstr << vertexShaderStream.rdbuf();
-        vertexShaderCode = sstr.str();
-        vertexShaderStream.close();
-    } else {
-        printf("Could not open %s.?\n", vertexshader_path);
-        getchar();
-        return 0;
-    }
-
-    // Read the Fragment Shader code from the file
-    std::string fragmentShaderCode;
-    std::ifstream fragmentShaderStream(fragmentshader_path, std::ios::in);
-    if (fragmentShaderStream.is_open()) {
-        std::stringstream sstr;
-        sstr << fragmentShaderStream.rdbuf();
-        fragmentShaderCode = sstr.str();
-        fragmentShaderStream.close();
-    } else {
-        printf("Could not open %s.?\n", fragmentshader_path);
-        getchar();
-        return 0;
-    }
-
-    GLint result = GL_FALSE;
-    int infoLogLength;
-
-    printf("Compiling shader : %s\n", vertexshader_path);
-    char const* VertexSourcePointer = vertexShaderCode.c_str();
-    glShaderSource(vertexShaderID, 1, &VertexSourcePointer, NULL);
-    glCompileShader(vertexShaderID);
-
-    // Check for vertex shader errors
-    glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &result);
-    glGetShaderiv(vertexShaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
-    if (infoLogLength > 0) {
-        std::vector<char> vertexShaderErrorMessage(infoLogLength + 1);
-        glGetShaderInfoLog(vertexShaderID, infoLogLength, NULL, &vertexShaderErrorMessage[0]);
-        printf("%s\n", &vertexShaderErrorMessage[0]);
-    }
-
-    // Compile fragment fhader
-    printf("Compiling shader : %s\n", fragmentshader_path);
-    char const* fragmentSourcePointer = fragmentShaderCode.c_str();
-    glShaderSource(fragmentShaderID, 1, &fragmentSourcePointer, NULL);
-    glCompileShader(fragmentShaderID);
-
-    // Check for fragment shader errors
-    glGetShaderiv(fragmentShaderID, GL_COMPILE_STATUS, &result);
-    glGetShaderiv(fragmentShaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
-    if (infoLogLength > 0) {
-        std::vector<char> fragmentShaderErrorMessage(infoLogLength + 1);
-        glGetShaderInfoLog(fragmentShaderID, infoLogLength, NULL, &fragmentShaderErrorMessage[0]);
-        printf("%s\n", &fragmentShaderErrorMessage[0]);
-    }
-    // Link the program
-    printf("Linking program\n");
-    GLuint programID = glCreateProgram();
-    glAttachShader(programID, vertexShaderID);
-    glAttachShader(programID, fragmentShaderID);
-    glLinkProgram(programID);
-
-    // Check the program
-    glGetProgramiv(programID, GL_LINK_STATUS, &result);
-    glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &infoLogLength);
-    if (infoLogLength > 0) {
-        std::vector<char> ProgramErrorMessage(infoLogLength + 1);
-        glGetProgramInfoLog(programID, infoLogLength, NULL, &ProgramErrorMessage[0]);
-        printf("%s\n", &ProgramErrorMessage[0]);
-    }
-
-    glDetachShader(programID, vertexShaderID);
-    glDetachShader(programID, fragmentShaderID);
-
-    glDeleteShader(vertexShaderID);
-    glDeleteShader(fragmentShaderID);
-
-    std::cout << "Shaders attached; Program created" << std::endl;
-    return programID;
-};
-
 int initGLProgram(const char* programName) {
     if (!glfwInit()) {
         fprintf(stderr, "Failed to initialize GLFW\n");
@@ -137,11 +47,10 @@ void render(PerspectiveCamera* camera, Geometry* geometry) {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);  // changes to wireframe mode
     // white background
     glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
-    // std::cout << "Current working directory: " << tmp << std::endl;
 
-    GLuint programID = loadShaders("../src/shaders/VertexShader.vs", "../src/shaders/FragmentShader.fs");
-    GLuint uModelView = glGetUniformLocation(programID, "modelView");
-    GLuint uProjection = glGetUniformLocation(programID, "projection");
+    Shader* shader = new Shader();
+    shader->CreateVFShader("../src/shaders/VertexShader.vert", "../src/shaders/FragmentShader.frag");
+    shader->Bind();
 
     // generate the vertex array object
     VertexArray* va = new VertexArray();
@@ -159,13 +68,8 @@ void render(PerspectiveCamera* camera, Geometry* geometry) {
         // Clear the screen
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-        // Use our shader
-        GLCall(glUseProgram(programID));
-
-        // Send our transformation to the currently bound shader,
-        // TODO: change to work with an actual camera class
-        glUniformMatrix4fv(uModelView, 1, GL_FALSE, &camera->getModelViewMat()[0][0]);
-        glUniformMatrix4fv(uProjection, 1, GL_FALSE, &camera->getProjectionMatrix()[0][0]);
+        shader->SetUniformMatrix4fv("modelView", camera->getModelViewMat());
+        shader->SetUniformMatrix4fv("projection", camera->getProjectionMatrix());
 
         va->Bind();
         ib->Bind();
@@ -179,7 +83,7 @@ void render(PerspectiveCamera* camera, Geometry* geometry) {
     while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
            glfwWindowShouldClose(window) == 0);
     // Cleanup VBO and shader
-    glDeleteProgram(programID);
+    glDeleteProgram(shader->GetRendererID());
     glDeleteVertexArrays(1, &VAO);
     delete vb;
     delete ib;

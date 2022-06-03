@@ -1,4 +1,4 @@
-#include "trackball_ctrl.hpp"
+#include "trackball_ctrl.h"
 
 TrackballControl::TrackballControl(GLFWwindow* _window, PerspectiveCamera* _camera) {
     window = _window;

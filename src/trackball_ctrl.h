@@ -1,5 +1,4 @@
-#ifndef TRACKBALLCTRL_HPP
-#define TRACKBALLCTRL_HPP
+#pragma once
 
 #include <cmath>
 #include <glm/gtc/quaternion.hpp>
@@ -7,8 +6,8 @@
 #include <glm/gtx/string_cast.hpp>
 #include <iostream>
 
-#include "camera.hpp"
-#include "utilities.hpp"
+#include "camera.h"
+#include "utilities.h"
 
 // uses the shoemake's algorithm to do the trackball
 // the algorithm puts a virtual hemiphere over the 2D screen, called the arcball
@@ -17,7 +16,7 @@
 class TrackballControl {
    private:
     GLFWwindow* window;
-    //PerspectiveCamera* camera;
+    // PerspectiveCamera* camera;
     glm::vec3 currCoord;
 
     // solution for accessing members of the control class from within the glfw callback
@@ -68,7 +67,7 @@ class TrackballControl {
         }
     };
 
-    //callback function for mouse button events
+    // callback function for mouse button events
     inline static auto mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) -> void {
         TrackballControl* trackballControl = static_cast<TrackballControl*>(glfwGetWindowUserPointer(window));
 
@@ -111,5 +110,3 @@ class TrackballControl {
 
     void addCameraTransform(glm::mat4 transform);
 };
-
-#endif

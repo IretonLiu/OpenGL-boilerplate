@@ -1,5 +1,4 @@
-#ifndef CAMERA_HPP
-#define CAMERA_HPP
+#pragma once
 
 #include <GLFW/glfw3.h>
 
@@ -30,7 +29,7 @@ class PerspectiveCamera : public Camera {
     GLfloat far;
 
    public:
-    //constructor
+    // constructor
     PerspectiveCamera(GLfloat _fov, GLfloat _aspectRatio, GLfloat _near, GLfloat _far);
 
     // setters
@@ -45,4 +44,3 @@ class PerspectiveCamera : public Camera {
     glm::mat4 getViewMatrix();
     glm::mat4 getModelViewMat();
 };
-#endif

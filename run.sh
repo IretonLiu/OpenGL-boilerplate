@@ -1,10 +1,9 @@
 #!/bin/bash
 
-while getopts 'cr:' OPTION; do
+while getopts 'c:' OPTION; do
   case "$OPTION" in
     c)
       rm -rf build
-			( cd build ; make )
       ;;
   esac
 done

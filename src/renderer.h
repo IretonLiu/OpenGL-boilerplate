@@ -22,6 +22,6 @@ bool GLLogCall(const char* function, const char* file, int line);
 // the main renderer class
 class Renderer {
    public:
-    void Draw(const VertexBuffer& va, const IndexBuffer& ib, const Shader& shader) const;
+    // void Draw(const VertexBuffer& va, const IndexBuffer& ib, const Shader& shader) const;
     Renderer();
 };

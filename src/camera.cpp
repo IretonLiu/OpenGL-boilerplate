@@ -1,4 +1,4 @@
-#include "camera.hpp"
+#include "camera.h"
 
 PerspectiveCamera::PerspectiveCamera(GLfloat _fov, GLfloat _aspectRatio, GLfloat _near, GLfloat _far) {
     fieldOfView = _fov;

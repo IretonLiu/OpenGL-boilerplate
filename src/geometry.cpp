@@ -1,4 +1,4 @@
-#include "geometry.hpp"
+#include "geometry.h"
 
 BoxGeometry::BoxGeometry(GLfloat width, GLfloat height, GLfloat length) {
     vertices = std::vector<GLfloat>{

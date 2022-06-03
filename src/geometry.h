@@ -1,5 +1,4 @@
-#ifndef GEOMETRY_HPP
-#define GEOMETRY_HPP
+#pragma once
 
 // openGL libraries
 #include <GL/glew.h>
@@ -34,5 +33,3 @@ class PlaneGeometry : public Geometry {
     void generateVertices();  // generate the vertices from the size and segment info
     void generateIndices();   // generate the indices from the size and segment info
 };
-
-#endif

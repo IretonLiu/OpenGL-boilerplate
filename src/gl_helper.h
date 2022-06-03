@@ -25,10 +25,11 @@
 #include <string>
 #include <vector>
 // custom includes
-#include "camera.hpp"
-#include "geometry.hpp"
+#include "camera.h"
+#include "geometry.h"
 #include "index_buffer.h"
 #include "renderer.h"
+#include "shader.h"
 #include "vertex_array.h"
 #include "vertex_buffer.h"
 
